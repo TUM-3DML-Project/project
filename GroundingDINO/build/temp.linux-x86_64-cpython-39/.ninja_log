@@ -1,0 +1,5 @@
+# ninja log v6
+4	574	1736099128036825625	/cluster/52/kamburoglu/project/GroundingDINO/build/temp.linux-x86_64-cpython-39/cluster/52/kamburoglu/project/GroundingDINO/groundingdino/models/GroundingDINO/csrc/cuda_version.o	39409f5032e676bd
+2	2421	1736099128036825625	/cluster/52/kamburoglu/project/GroundingDINO/build/temp.linux-x86_64-cpython-39/cluster/52/kamburoglu/project/GroundingDINO/groundingdino/models/GroundingDINO/csrc/MsDeformAttn/ms_deform_attn_cpu.o	194402dd8a23dc6f
+3	8637	1736099128036825625	/cluster/52/kamburoglu/project/GroundingDINO/build/temp.linux-x86_64-cpython-39/cluster/52/kamburoglu/project/GroundingDINO/groundingdino/models/GroundingDINO/csrc/MsDeformAttn/ms_deform_attn_cuda.o	9e7087c5cce8924c
+5	11354	1736099128036825625	/cluster/52/kamburoglu/project/GroundingDINO/build/temp.linux-x86_64-cpython-39/cluster/52/kamburoglu/project/GroundingDINO/groundingdino/models/GroundingDINO/csrc/vision.o	aa67a978af0ebd07
