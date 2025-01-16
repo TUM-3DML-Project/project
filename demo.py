@@ -5,27 +5,27 @@ from pytorch3d.io import IO
 import numpy as np
 from src.utils import normalize_pc
 from src.render_pc import render_pc
-from src.glip_inference import glip_inference, load_model
+from src.glip_inference import glip_inference
 from src.gen_superpoint import gen_superpoint
 from src.bbox2seg import bbox2seg
 
-def Infer(input_pc_file, category, part_names,glip_demo, save_dir="tmp"):       
+def InferGLIP(xyz, rgb, screen_coords, pc_idx, category, part_names,glip_demo,device, save_dir="tmp"):       
 #     print("-----Zero-shot inference of %s-----" % input_pc_file)
 
 #     print("[creating tmp dir...]")
-    if torch.cuda.is_available():
-        device = torch.device("cuda:0")
-        torch.cuda.set_device(device)
-    else:
-        device = torch.device("cpu")
-    io = IO()
-    os.makedirs(save_dir, exist_ok=True)
+    # if torch.cuda.is_available():
+    #     device = torch.device("cuda:0")
+    #     torch.cuda.set_device(device)
+    # else:
+    #     device = torch.device("cpu")
+    # io = IO()
+    # os.makedirs(save_dir, exist_ok=True)
     
 #     print("[normalizing input point cloud...]")
-    xyz, rgb = normalize_pc(input_pc_file, save_dir, io, device)
+    # xyz, rgb = normalize_pc(input_pc_file, save_dir, io, device)
     
 #     print("[rendering input point cloud...]")
-    img_dir, pc_idx, screen_coords = render_pc(xyz, rgb, save_dir, device)
+    # img_dir, pc_idx, screen_coords = render_pc(xyz, rgb, save_dir, device, 'test_glip_remove')
     
 #     print("[glip infrence...]")
     preds = glip_inference(glip_demo, save_dir, part_names)
@@ -37,6 +37,8 @@ def Infer(input_pc_file, category, part_names,glip_demo, save_dir="tmp"):
     sem_seg, ins_seg = bbox2seg(xyz, superpoint, preds, screen_coords, pc_idx, part_names, save_dir, solve_instance_seg=False)
     
 #     print("[finish!]")
+
+    return {"part_names_ordered": part_names, "sem_seg": sem_seg, "category": category}
     
 if __name__ == "__main__":
     partnete_meta = json.load(open("PartNetE_meta.json")) 

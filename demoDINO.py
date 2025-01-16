@@ -36,35 +36,13 @@ def check_pc_within_bbox(x1, y1, x2, y2, pc):
     flag = np.logical_and(flag, pc[:, 1] < y2)
     return flag
 
-def toDinoPrompt(metaData,className):
-    listOfParts = metaData[className]
-    prompt = ""
-    partList = {}
-    for i,part in enumerate(listOfParts):
-        prompt += f"{className} {part}.".lower()
-        partList[f"{className} {part}".lower()] = i
-    return prompt,partList
-
-def InferDINOSAMZeroShot(input_pc_file, category, modelDINO, predictorSAM, metaData, device,BOX_TRESHOLD = 0.2,
-    TEXT_TRESHOLD = 0.3, SCORE_THRESHOLD=0.2, n_neighbors = 21, n_pass=3, save_dir="tmp"):
+def InferDINOSAMZeroShot(TEXT_PROMPT, partList, xyz, pc_idx, screen_coords, category, modelDINO, predictorSAM, device, BOX_TRESHOLD = 0.2, TEXT_TRESHOLD = 0.3, SCORE_THRESHOLD=0.2, n_neighbors = 21, n_pass=3, save_dir="tmp"):
     
-#     print("-----Zero-shot inference of %s-----" % input_pc_file)
-    TEXT_PROMPT,partList = toDinoPrompt(metaData, category)
-    
-    os.makedirs(save_dir, exist_ok=True)
-    os.makedirs(f"{save_dir}/rendered_img", exist_ok=True) #create the necessary save directories
-    os.makedirs(f"{save_dir}/dino_pred", exist_ok=True)
-    os.makedirs(f"{save_dir}/semantic_segDino_KNN", exist_ok=True)
-    
-    io = IO()
-    xyz, rgb = normalize_pc(input_pc_file, save_dir, io, device) #read Point cloud and rgb in the format n,3
-    img_dir, pc_idx, screen_coords = render_pc(xyz, rgb, save_dir, device) #create the rendered 2D images and return 
-    # pc_idx = hxw where every pixel has a PC index correspondence   
     preds = []
     for i in range(pc_idx.shape[0]):
         image_source, image = load_image(f"{save_dir}/rendered_img/{i}.png") #load rgb images
         predictorSAM.set_image(image_source)
-#         print("[dino inference...]")
+
         boxes, logits, phrases = predict(
                                         model=modelDINO,
                                         image=image,
