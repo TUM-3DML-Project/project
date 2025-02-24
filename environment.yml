@@ -5,6 +5,7 @@ channels:
   - defaults
   - iopath
   - pytorch
+  - nvidia
 dependencies:
   - boost=1.73.0
   - eigen=3.4.0
@@ -14,7 +15,7 @@ dependencies:
   - matplotlib=3.7.1
   - pycocotools=2.0.6
   - python=3.9.0
-  - cudatoolkit=11.3.0
+  - cudatoolkit=11.3.1
   - cuda=11.3.0
   - pytorch-gpu=1.9.0
   - scikit-learn=1.2.0
