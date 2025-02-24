@@ -2,6 +2,9 @@ import os
 import torch
 import numpy as np
 
+
+
+
 def normalize_pc(pc_file, save_dir, io, device, save_normalized_pc=False):
     pc = io.load_pointcloud(pc_file, device = device)
     xyz = pc.points_padded().reshape(-1,3)

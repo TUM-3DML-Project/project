@@ -35,12 +35,12 @@ def render_single_view(pc, view, device, background_color=(1,1,1), resolution=80
     screen_coords = cameras.transform_points_screen(pc._points_list[0], image_size=(resolution, resolution))
     return img, pc_idx, screen_coords
     
-def render_pc(xyz, rgb, save_dir, device, save_dir_obj, im_format = "png"):
+def render_pc(xyz, rgb, save_dir, device, im_format = "png"):
     pc = Pointclouds(points=[torch.Tensor(xyz).to(device)],
                     features=[torch.Tensor(rgb).to(device)])
     #pc = io.load_pointcloud(pc_file, device=device)
 
-    img_dir = os.path.join(save_dir, "rendered_img_test", str(save_dir_obj))
+    img_dir = os.path.join(save_dir, "rendered_img")
     os.makedirs(img_dir, exist_ok=True)
 
     views = [[10, 0], [10, 90], [10, 180], [10, 270], [40, 0], [40, 120], [40, 240], [-20, 60], [-20, 180], [-20, 300]]

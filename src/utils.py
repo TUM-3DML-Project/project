@@ -2,6 +2,35 @@ import os
 import torch
 import numpy as np
 
+def yolobbox2bbox(yolobox):
+    x = yolobox[:,0]
+    y = yolobox[:,1]
+    w = yolobox[:,2]
+    h = yolobox[:,3]
+    xyxy = np.zeros_like(yolobox)
+    xyxy[:,0] = x-w/2
+    xyxy[:,1] = y-h/2
+    xyxy[:,2] = x+w/2
+    xyxy[:,3] = y+h/2
+    return xyxy
+
+def toDinoPrompt(metaData,className):
+    listOfParts = metaData[className]
+    prompt = ""
+    partList = {}
+    for i,part in enumerate(listOfParts):
+        prompt += f"{part} of {className}.".lower()
+        partList[f"{part}".lower()] = i
+    return prompt,partList
+
+def check_pc_within_bbox(x1, y1, x2, y2, pc):  
+    flag = np.logical_and(pc[:, 0] > x1, pc[:, 0] < x2)
+    flag = np.logical_and(flag, pc[:, 1] > y1)
+    flag = np.logical_and(flag, pc[:, 1] < y2)
+    return flag
+
+
+
 def normalize_pc(pc_file, save_dir, io, device, save_normalized_pc=False):
     pc = io.load_pointcloud(pc_file, device = device)
     xyz = pc.points_padded().reshape(-1,3)
