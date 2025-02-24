@@ -8,7 +8,7 @@ git clone https://github.com/TUM-3DML-Project/project.git
 
 Create a conda envrionment and install dependencies.
 ```bash
-conda env create -f environment.yml
+conda env create -f environment.yml --solver classic
 conda activate env_fastpartslip
 ```
 Install PyTorch3D
